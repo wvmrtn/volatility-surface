@@ -8,14 +8,14 @@ Created on Thu Apr 23 14:54:28 2020
 
 # import standard libraries
 import datetime
-import json
 import requests as re
 import urllib.parse
 # import third-party libraries
 import pandas as pd
 # import local libraries
+from config import _TICKERS
 
-BASE_URL = 'https://query1.finance.yahoo.com'
+_BASE_URL = 'https://query1.finance.yahoo.com'
 
 class Market:
     """ Market object to get options.
@@ -26,7 +26,20 @@ class Market:
         Ticker symbol of the market
     
     """
+    
     def __init__(self, ticker):
+        """Init function of class.
+
+        Parameters
+        ----------
+        ticker : string
+            Ticker symbol of index.
+
+        Returns
+        -------
+        None.
+
+        """
         # some basic information
         self.ticker = ticker
         self.ticker_encoded = urllib.parse.quote(ticker)
@@ -40,13 +53,44 @@ class Market:
 
     @staticmethod
     def epochToDate(epoch):
+        """ Transform epoch integers to dates in strings
+
+        Parameters
+        ----------
+        epoch : int
+            Epoch number of maturity date.
+
+        Returns
+        -------
+        string
+            The equivalent epoch time in date string.
+
+        """
         return datetime.datetime.fromtimestamp(epoch).strftime('%Y-%m-%d') 
 
     def customGet(self, date = None):
+        """Custom get requests.
+
+        Parameters
+        ----------
+        date : string or int, optional
+            The maturity date of the option. The default is None.
+
+        Raises
+        ------
+        error
+            Requestion error.
+
+        Returns
+        -------
+        response : dict
+            JSON-type reponse from request.
+
+        """
         if not date:
-            url = '{}/v7/finance/options/{}'.format(BASE_URL, self.ticker_encoded)
+            url = '{}/v7/finance/options/{}'.format(_BASE_URL, self.ticker_encoded)
         else:
-            url = '{}/v7/finance/options/{}?date={}'.format(BASE_URL,
+            url = '{}/v7/finance/options/{}?date={}'.format(_BASE_URL,
                                                             self.ticker_encoded,
                                                             date)
         # try requests
@@ -58,6 +102,22 @@ class Market:
             raise e
 
     def downloadOptions(self, date, parse_to_df = True):
+        """Donwload options of market at date.
+
+        Parameters
+        ----------
+        date : string or int
+            Maturity or expiration date of options.
+        parse_to_df : bool, optional
+            Parse options from request from pandas.DataFrame. 
+            The default is True.
+
+        Returns
+        -------
+        dict or pandas.DataFrame
+            Options, either raw from request or cleaned in a pandas.DataFrame.
+
+        """
         # get epoch time
         if isinstance(date, str):
             date = self.maturity_dates[date]
@@ -70,6 +130,20 @@ class Market:
             return options  
         
     def parseOptions(self, raw_options):
+        """Parse raw options into one pandas.DataFrame.
+
+        Parameters
+        ----------
+        raw_options : dict
+            Raw optionss from request.
+
+        Returns
+        -------
+        options_df : pandas.DataFrame
+            All options cleaned into one pandas.DataFrame.
+
+        """
+        
         # transform options to dataframe
         options = raw_options['optionChain']['result'][0]['options'][0]
         calls = options['calls']
@@ -89,10 +163,18 @@ class Market:
 
         return options_df
     
-    def downloadAllOptions(self, parse_to_df = True):
+    def downloadAllOptions(self):
+        """Download all options at all maturity dates.
+
+        Returns
+        -------
+        options_df : pandas.DataFrame
+            All options at all maturity dates.
+
+        """
         options_df = pd.DataFrame()
         for _, epoch in self.maturity_dates.items():
-            temp = self.downloadOptions(date = epoch)
+            temp = self.downloadOptions(date = epoch, parse_to_df = True)
             options_df = pd.concat([options_df, temp], axis = 0)
         
         return options_df
@@ -101,7 +183,8 @@ class Market:
 # for testing
 if __name__ == '__main__':
     
-    sp500 = Market('^XSP')
+    ticker = list(_TICKERS.keys())[0]
+    sp500 = Market(ticker)
     # options = sp500.downloadOptions(1591920000, parse_to_df = True)
     options = sp500.downloadAllOptions()
     
