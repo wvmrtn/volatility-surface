@@ -11,7 +11,7 @@ import requests
 # import third-party libraries
 import pandas as pd
 # import local libraries
-from config import _MAPPING, _TICKERS
+from config import _MAPPING, _TICKERS, _YEAR
 
 def _downloadBonds(ticker):
     """Download bonds depending on ticker symbol.
@@ -24,8 +24,8 @@ def _downloadBonds(ticker):
     Returns
     -------
     bonds : pandas.Series
-        pandas.Series with list of yields (name: yield).
-        Keys are in days. 
+        pandas.Series with list of yields (name: rate).
+        Keys are in years. 
 
     """
     assert ticker in _TICKERS, 'Ticker not valid.'
@@ -42,18 +42,18 @@ def _downloadBonds(ticker):
         # rename columns
         columns = bonds.columns
         columns = [s.split(' ') for s in columns]
-        columns_days = []
+        columns_years = []
         for c in columns:
             if c[1] == 'mo':
-                days = 30
+                years = 30/_YEAR
             elif c[1] == 'yr':
-                days = 365
-            else:
-                days = 0
-            columns_days.append(float(c[0])*days)
-        bonds.columns = columns_days
+                years = 1
+            else: # hope this doest not happend
+                years = 0
+            columns_years.append(float(c[0])*years)
+        bonds.columns = columns_years
         bonds = bonds.iloc[-1]
-        bonds = bonds.rename('yield')
+        bonds = bonds.rename('rate')
         bonds /= 100 # from percentage to float
         
     elif area == '':
@@ -66,4 +66,4 @@ def _downloadBonds(ticker):
 
 if __name__ == '__main__':
     
-    bonds = downloadBonds('^XSP')
+    bonds = _downloadBonds('^XSP')

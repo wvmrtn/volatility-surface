@@ -83,25 +83,34 @@ def compact(df):
         
  ###############################################################
  
-def implied_vol(df,sigma_0,error,div_yield):#,S): 
+def implied_vol(df,sigma_0,error):#,div_yield,S): 
     #df: dataframe, cols={price","strike","maturity","rate","div_yield","type"}
     #div_yield: dividend yield  of the market
     #S: stock price
-     
+    
+    result = pd.DataFrame()
     df2= df.copy()
     df2["implied_vol"]=np.nan
      
-    n= df2.shape[0]
+    #n= df2.shape[0]
 
-    for i in range(n):
+    for i, row in df2.iterrows():  #for i in range(n):
         
-        S=df2["price"][i]
-        tau=df2["maturity"][i]
-        k=df2["strike"][i]
-        r=df2["rate"][i]
-        delta=div_yield
-        types=df2["type"][i]
-        df2["implied_vol"][i]= vol_extraction(S,sigma_0,k,tau,r,delta,types,error)
+        # S=df2["price"][i]
+        # tau=df2["maturity"][i]
+        # k=df2["strike"][i]
+        # r=df2["rate"][i]
+        # delta=div_yield
+        # types=df2["type"][i]
+        
+        S =  row['lastPrice']
+        tau = row['maturity']
+        k = row['strike']
+        r = row['rate']
+        delta = row['delta']
+        types = row['type']
+        
+        df2.at[i, 'implied_vol']= vol_extraction(S,sigma_0,k,tau,r,delta,types,error)
 
     
     result=compact(df2[["strike","maturity","implied_vol"]])

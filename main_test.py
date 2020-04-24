@@ -9,20 +9,21 @@ Created on Fri Apr 24 12:06:37 2020
 # import standard libraries
 # import third-party libraries
 # import local libraries
-from yahoo_requests import Market
-from bond_requests import downloadBonds
+from yahoo_requests import Index
 from implied_vol_functions import implied_vol
 
 if __name__ == '__main__':
     
     # download options of index
     ticker  = '^XSP'
-    div_yield = 0.0231
-    sp500 =  Market(ticker, div_yield)
-    options = sp500.downloadAllOptions()
+    delta = 0.0231
+    sp500 = Index(ticker, delta)
+    sp500.downloadAllOptions()
+    sp500.downloadBonds()
+    options = sp500.options
     
-    # download bonds
-    bonds = downloadBonds(ticker)
+    # compute implied volatility
+    result = implied_vol(options, sigma_0 = 0.01, error = 0.01)
     
     
     
