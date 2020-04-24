@@ -27,14 +27,14 @@ class Index:
     
     """
     
-    def __init__(self, ticker, delta):
+    def __init__(self, ticker, div_yield):
         """Init function of class.
 
         Parameters
         ----------
         ticker : string
             Ticker symbol of index.
-        delta : float
+        div_yield : float
             Dividend yield of the index. Not in percentage.
 
         Returns
@@ -46,7 +46,7 @@ class Index:
         assert ticker in _TICKERS, 'Ticker not valid.'
         self.ticker = ticker
         self.ticker_encoded = urllib.parse.quote(ticker)
-        self.delta = delta
+        self.div_yield = div_yield
         self.options = pd.DataFrame()
         self.bonds = pd.DataFrame()
             
@@ -56,6 +56,10 @@ class Index:
         dates = [self._epochToDate(m) for m in epochs]
         self.maturity_dates = dict(zip(dates, epochs))
         self.maturity_epochs = dict(zip(epochs, dates))
+        
+        # get price of index
+        content = self._customGet(get = 'price')
+        self.price = content['chart']['result'][0]['meta']['regularMarketPrice']
 
     @staticmethod
     def _epochToDate(epoch):
@@ -74,11 +78,13 @@ class Index:
         """
         return datetime.datetime.fromtimestamp(epoch).strftime('%Y-%m-%d') 
 
-    def _customGet(self, date = None):
+    def _customGet(self, get = 'options', date = None):
         """Custom get requests.
 
         Parameters
         ----------
+        get : string, optional
+            What to get.  The default is 'options'
         date : string or int, optional
             The maturity date of the option. The default is None.
 
@@ -93,12 +99,19 @@ class Index:
             JSON-type reponse from request.
 
         """
-        if not date:
-            url = '{}/v7/finance/options/{}'.format(_BASE_URL, self.ticker_encoded)
+        if get == 'options':
+            if not date:
+                url = '{}/v7/finance/options/{}'.format(_BASE_URL, self.ticker_encoded)
+            else:
+                url = '{}/v7/finance/options/{}?date={}'.format(_BASE_URL,
+                                                                self.ticker_encoded,
+                                                                date)
+        elif get == 'price': # get price otherwise
+            url = '{}/v8/finance/chart/{}'.format(_BASE_URL, 
+                                                  self.ticker_encoded)
         else:
-            url = '{}/v7/finance/options/{}?date={}'.format(_BASE_URL,
-                                                            self.ticker_encoded,
-                                                            date)
+            url = ''
+            
         # try requests
         try:
             response = re.get(url).json()
@@ -168,8 +181,6 @@ class Index:
         options_df['maturityDate'] = options_df['expiration'].apply(self._epochToDate)
         # date to datetime object
         options_df['maturityDate'] =  pd.to_datetime(options_df['maturityDate'])
-        # put delta in dataframe
-        options_df['delta'] = self.delta
         # put number of days till maturityDate normalized by year
         now = datetime.datetime.now()
         now = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -253,15 +264,11 @@ class Index:
 # for testing
 if __name__ == '__main__':
     
-    delta = 0.0231
+    div_yield = 0.0231
     ticker = list(_TICKERS.keys())[0]
-    sp500 = Index(ticker, delta)
+    sp500 = Index(ticker, div_yield)
     # options = sp500.downloadOptions(1591920000, parse_to_df = True)
-    options = sp500.downloadAllOptions()
-    
-    
-    
-    
+    # options = sp500.downloadAllOptions()
     
     
     

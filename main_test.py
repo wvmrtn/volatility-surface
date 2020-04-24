@@ -16,14 +16,18 @@ if __name__ == '__main__':
     
     # download options of index
     ticker  = '^XSP'
-    delta = 0.0231
-    sp500 = Index(ticker, delta)
+    div_yield = 0.0231
+    sp500 = Index(ticker, div_yield)
     sp500.downloadAllOptions()
     sp500.downloadBonds()
     options = sp500.options
     
-    # compute implied volatility
-    result = implied_vol(options, sigma_0 = 0.01, error = 0.01)
+    # price of index
+    price = sp500.price
+    # dividen yield
+    dividend = sp500.div_yield
     
+    # compute implied volatility
+    # ...
     
     
