@@ -1,6 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 23 19:49:05 2020
+
+@authors: Kassi Franck Atte Aka, Corentin Bourdeix, William Martin
+"""
+
+from scipy.stats import norm
+import numpy as np
+import pandas as pd
+
 def black_scholes(S,sigma,k,tau,r,delta,types):
-    from scipy.stats import norm
-    import numpy as np
     
     #S: spot price
     #K: strike price
@@ -18,13 +28,11 @@ def black_scholes(S,sigma,k,tau,r,delta,types):
     if types=="call":
         price=  np.exp(-delta*tau)*S*norm.cdf(d_u)-np.exp(-r*tau)*k*norm.cdf(d_d)
   
-    return(price)
+    return price
   
 ###############################################################
 
 def vega(S,sigma,k,tau,r,delta):
-    from scipy.stats import norm
-    import numpy as np
     
     d_u= (1/(sigma*np.sqrt(tau))) * (np.log(np.exp((r-delta)*tau)*S/k)+0.5*tau*(sigma**2))
     v= np.exp(-delta*tau)*S*np.sqrt(tau)*norm.pdf(d_u)
@@ -53,14 +61,11 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
         bs= black_scholes(S,vol,k,tau,r,delta,types)
         
   
-    return(vol)
+    return  vol
  
 ###############################################################    
      
 def compact(df):
-    
-    import pandas as pd
-    import numpy as np
     
     tab=pd.DataFrame(np.zeros(3).reshape(-1,3))
     tab.columns=["maturity","strike","implied_vol"]
@@ -78,12 +83,10 @@ def compact(df):
         
  ###############################################################
  
-def implied_vol(df,sigma_0,error,div_yield,S): 
+def implied_vol(df,sigma_0,error,div_yield):#,S): 
     #df: dataframe, cols={price","strike","maturity","rate","div_yield","type"}
     #div_yield: dividend yield  of the market
     #S: stock price
-     
-    import numpy as np
      
     df2= df.copy()
     df2["implied_vol"]=np.nan

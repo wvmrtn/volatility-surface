@@ -13,7 +13,7 @@ import pandas as pd
 # import local libraries
 from config import _MAPPING, _TICKERS
 
-def downloadBonds(ticker):
+def _downloadBonds(ticker):
     """Download bonds depending on ticker symbol.
 
     Parameters
@@ -54,6 +54,7 @@ def downloadBonds(ticker):
         bonds.columns = columns_days
         bonds = bonds.iloc[-1]
         bonds = bonds.rename('yield')
+        bonds /= 100 # from percentage to float
         
     elif area == '':
         pass

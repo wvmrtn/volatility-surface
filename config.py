@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 23 19:56:27 2020
+Created on Thu Apr 23 19:49:05 2020
 
-@author: williammartin
+@authors: Kassi Franck Atte Aka, Corentin Bourdeix, William Martin
 """
 
 # import standard libraries

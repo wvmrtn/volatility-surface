@@ -14,6 +14,7 @@ import urllib.parse
 import pandas as pd
 # import local libraries
 from config import _TICKERS
+from bond_requests import _downloadBonds
 
 _BASE_URL = 'https://query1.finance.yahoo.com'
 
@@ -27,13 +28,15 @@ class Market:
     
     """
     
-    def __init__(self, ticker):
+    def __init__(self, ticker,  div_yield):
         """Init function of class.
 
         Parameters
         ----------
         ticker : string
             Ticker symbol of index.
+        div_yield : float
+            Dividend yield of the index. Not percentage.
 
         Returns
         -------
@@ -41,8 +44,10 @@ class Market:
 
         """
         # some basic information
+        assert ticker in _TICKERS, 'Ticker not valid.'
         self.ticker = ticker
         self.ticker_encoded = urllib.parse.quote(ticker)
+        self.div_yield = div_yield
             
         # get all maturity dates (epoch times)
         content = self.customGet()
@@ -178,6 +183,10 @@ class Market:
             options_df = pd.concat([options_df, temp], axis = 0)
         
         return options_df
+    
+    def downloadBonds(self):
+        
+        return None
     
 
 # for testing
