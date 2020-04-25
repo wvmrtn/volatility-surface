@@ -35,6 +35,7 @@ def vega(S,sigma,k,tau,r,delta):
 ###############################################################
 
 def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
+    import numpy as np
     # extract the implied volatility using Newton's optimisation scheme
     #S: spot price
     #K: strike price
@@ -50,14 +51,20 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
     
     while abs(bs-H)>error:
         vol = vol - (bs-H)/vega(S,vol,k,tau,r,delta)
+        if (vol==np.inf) or (vol==-np.inf):
+            vol=np.nan
+        break
         bs= black_scholes(S,vol,k,tau,r,delta,types)
         
-  
+    if vol<0:
+        vol=0
+        
     return(vol)
  
 ###############################################################    
      
 def compact(df):
+    
     
     import pandas as pd
     import numpy as np
@@ -73,7 +80,7 @@ def compact(df):
         sub.index=range(len(sub))
         
         tab=pd.concat([tab,sub])
-        
+    tab=tab.dropna()    
     return tab.drop(0)
         
  ###############################################################
@@ -93,15 +100,15 @@ def implied_vol(df,sigma_0,error,div_yield,S):
 
     for i in range(n):
         
-        H=df2["price"][i]
-        tau=df2["maturity"][i]
-        k=df2["strike"][i]
-        r=df2["rate"][i]
+        H=df2["lastPrice"].iloc[i]
+        tau=df2["maturity"].iloc[i]
+        k=df2["strike"].iloc[i]
+        r=df2["rate"].iloc[i]
         delta=div_yield
-      
-        types=df2["type"][i]
-        df2["implied_vol"][i]= vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error)
+        types=df2["type"].iloc[i]
+        df2["implied_vol"].iloc[i]= vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error)
 
+    
     
     result=compact(df2[["strike","maturity","implied_vol"]])
    
