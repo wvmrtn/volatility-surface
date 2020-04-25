@@ -168,7 +168,7 @@ class Index:
         calls = options['calls']
         puts = options['puts']
         # keep only these entries
-        keep = ['strike', 'lastPrice', 'impliedVolatility', 'expiration']
+        keep = ['strike', 'ask', 'bid', 'impliedVolatility', 'expiration']
         # put in dataframe and keep only columns 
         calls_df = pd.DataFrame(calls, columns = keep)
         puts_df = pd.DataFrame(puts, columns = keep)
@@ -187,6 +187,8 @@ class Index:
         options_df['maturity'] = (options_df['maturityDate'] - now).dt.days/_YEAR 
         # drop expiration
         options_df = options_df.drop(columns = 'expiration')
+        # add column average between ask and bid
+        options_df['optionPrice'] = options_df[['ask', 'bid']].mean(axis = 1)
 
         return options_df
     
@@ -267,8 +269,8 @@ if __name__ == '__main__':
     div_yield = 0.0231
     ticker = list(_TICKERS.keys())[0]
     sp500 = Index(ticker, div_yield)
-    # options = sp500.downloadOptions(1591920000, parse_to_df = True)
-    # options = sp500.downloadAllOptions()
+    #options = sp500.downloadOptions(1591920000, parse_to_df = False)
+    options = sp500.downloadAllOptions()
     
     
     
