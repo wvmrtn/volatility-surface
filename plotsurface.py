@@ -5,6 +5,7 @@ Created on Fri Apr 24 16:42:06 2020
 @author: corentin
 """
 
+from plotly.offline import plot
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
@@ -23,7 +24,9 @@ def affichage3D(sigma,maturity,strike):
                     zaxis_title='Volatility'),
 
                   margin=dict(r=20, b=10, l=10, t=90))
-    fig.show()
+    
+    plot(fig)
+    # fig.show()
     
     return
 
