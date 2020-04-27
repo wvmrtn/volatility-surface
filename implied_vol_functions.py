@@ -100,7 +100,7 @@ def implied_vol(df,sigma_0,error,div_yield,S):
 
     for i in range(n):
         
-        H=df2["lastPrice"].iloc[i]
+        H=df2["optionPrice"].iloc[i]
         tau=df2["maturity"].iloc[i]
         k=df2["strike"].iloc[i]
         r=df2["rate"].iloc[i]

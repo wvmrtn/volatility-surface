@@ -11,7 +11,7 @@ Created on Fri Apr 24 12:06:37 2020
 # import local libraries
 from yahoo_requests import Index
 from implied_vol_functions import implied_vol
-
+from plotsurface import aff_surface
 if __name__ == '__main__':
     
     # download options of index
@@ -28,6 +28,6 @@ if __name__ == '__main__':
     dividend = sp500.div_yield
     
     # compute implied volatility
-    # ...
+    results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
     
-    
+    aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])
