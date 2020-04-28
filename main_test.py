@@ -28,7 +28,7 @@ if __name__ == '__main__':
     dividend = sp500.div_yield
     
     # compute implied volatility
-    # results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
+    results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
     
     #results=results[results.type=="call"]
     #aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])
