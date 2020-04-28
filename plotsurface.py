@@ -108,9 +108,9 @@ def aff_surface(sigma_calcul,strike,maturity):
     return
 
 #test 
-std=np.array([0,1,2,5,2,6,8,9])
-strike=np.array([10,12,20,22,80,60,25,50])
-mat=np.array([1,1,3,3,1,2,2,3])
+#std=np.array([0,1,2,5,2,6,8,9])
+#strike=np.array([10,12,20,22,80,60,25,50])
+#mat=np.array([1,1,3,3,1,2,2,3])
 
-aff_surface(std,strike,mat)
+#aff_surface(std,strike,mat)
 
