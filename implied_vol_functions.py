@@ -12,7 +12,8 @@ def black_scholes(S,sigma,k,tau,r,delta,types):
 
     d_d= (1/(sigma*np.sqrt(tau))) * (np.log(np.exp((r-delta)*tau) *S/k)-0.5*tau*(sigma**2))
     d_u= (1/(sigma*np.sqrt(tau))) * (np.log(np.exp((r-delta)*tau)*S/k)+0.5*tau*(sigma**2))
-   
+    
+        
     if types=="put":
         price=  np.exp(-r*tau)*k*norm.cdf(-d_d) - np.exp(-delta*tau)*S*norm.cdf(-d_u)
     if types=="call":
@@ -36,6 +37,7 @@ def vega(S,sigma,k,tau,r,delta):
 
 def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
     import numpy as np
+    from scipy.stats import norm
     # extract the implied volatility using Newton's optimisation scheme
     #S: spot price
     #K: strike price
@@ -48,6 +50,8 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
     vol= sigma_0
     
     bs= black_scholes(S,vol,k,tau,r,delta,types)
+    up_bound=-2* norm.ppf((1-H)/(1+np.exp(k)))
+    down_bound= -2* norm.ppf((1-H)/2)
     
     while abs(bs-H)>error:
         vol = vol - (bs-H)/vega(S,vol,k,tau,r,delta)
@@ -57,7 +61,10 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
         bs= black_scholes(S,vol,k,tau,r,delta,types)
         
     if vol<0:
-        vol=0
+        vol=np.nan
+    if (vol>up_bound)or (vol<down_bound):
+        vol=np.nan
+        
         
     return(vol)
  

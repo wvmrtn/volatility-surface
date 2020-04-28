@@ -30,4 +30,10 @@ if __name__ == '__main__':
     # compute implied volatility
     results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
     
-    aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])
+    #results=results[results.type=="call"]
+    #aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])
+    
+    
+
+    
+    
