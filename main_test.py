@@ -15,7 +15,7 @@ from plotsurface import aff_surface
 if __name__ == '__main__':
     
     # download options of index
-    ticker  = '^XSP'
+    ticker  = '^GSPC'
     div_yield = 0.0231
     sp500 = Index(ticker, div_yield)
     sp500.downloadAllOptions()
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     dividend = sp500.div_yield
     
     # compute implied volatility
-    results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
+    # results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
     
     #results=results[results.type=="call"]
     #aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])

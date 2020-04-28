@@ -16,7 +16,8 @@ _BASE_URL = 'https://query1.finance.yahoo.com'
 # url links to bonds of each zone
 _BOND_US = 'https://www.treasury.gov/resource-center/data-chart-center/interest-rates/pages/textview.aspx?data=yield'
 
-_TICKERS = {'^XSP': 'United States'}
+_TICKERS = {'^XSP': 'United States',
+            '^GSPC': 'United States'}
 _MAPPING = {'United States': _BOND_US}
 
 # other constants
