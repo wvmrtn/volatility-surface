@@ -118,6 +118,7 @@ def implied_vol(df,sigma_0,error,div_yield,S):
     
     
     result=compact(df2[["strike","maturity","implied_vol"]])
+    result['implied_vol']= result['implied_vol'] *100
    
     return result
 

@@ -31,9 +31,10 @@ if __name__ == '__main__':
     results=implied_vol(options, sigma_0=1, error=10**-(6), div_yield=dividend,S=price)
     
     #results=results[results.type=="call"]
-    #aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])
-    
-    
+    aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"])
+    # la volatilité est en % si jamais mettre ca dans le label
+    # plutot que 365 jour, muliplirt par 252
+    # maturity, remettre en jour dans la fonction surface
 
     
     
