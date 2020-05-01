@@ -11,7 +11,7 @@ import requests
 # import third-party libraries
 import pandas as pd
 # import local libraries
-from config import _MAPPING, _TICKERS, _YEAR
+from config import _MAPPING, _TICKERS
 
 def _downloadBonds(ticker):
     """Download bonds depending on ticker symbol.
@@ -45,7 +45,7 @@ def _downloadBonds(ticker):
         columns_years = []
         for c in columns:
             if c[1] == 'mo':
-                years = 30/_YEAR
+                years = 1/12
             elif c[1] == 'yr':
                 years = 1
             else: # hope this doest not happend

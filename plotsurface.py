@@ -12,23 +12,52 @@ import seaborn as sns
 import plotly.graph_objects as go
 
 
-def affichage3D(sigma,maturity,strike):
+def affichage3D(sigma,maturity,strike, _plot = True):
     
-    fig = go.Figure(data=[go.Surface(x=maturity,y=strike,z=sigma,colorscale='Viridis')])
-    fig.update_layout(title_text='Volatility surface', autosize=True,
-                  width=500, height=500,
+    fig = go.Figure(data=[go.Surface(x=maturity,
+                                     y=strike,
+                                     z=sigma,
+                                     colorscale='Viridis',
+                                     colorbar = {'lenmode': 'fraction', 'len': 0.70} 
+                                     )])
+    
+    camera = dict(
+        up = dict(x = 0, y = 0, z = 1),
+        center = dict(x = 0, y = 0, z = -0.1),
+        eye = dict(x = 1.6, y = 1.6, z = 0.8)
+        )
+    
+    fig.update_layout(
+            #title_text='Volatility surface', 
+            
+            autosize=True,
+            
+            width=700, 
+            height=550,
+            
+            scene = dict(
+                xaxis_title='Maturity',
+                yaxis_title='Strike',
+                zaxis_title='Volatility',
+                xaxis = dict(showbackground = True,
+                             backgroundcolor = '#f5f9ff'),
+                yaxis = dict(showbackground = True,
+                             backgroundcolor = '#f5f9ff'),
+                zaxis = dict(showbackground = True,
+                             backgroundcolor = '#f5f9ff'),
+                ),
 
-                  scene = dict(
-                    xaxis_title='Maturity',
-                    yaxis_title='Strike',
-                    zaxis_title='Volatility'),
-
-                  margin=dict(r=20, b=10, l=10, t=90))
+            margin=dict(r=10, b=10, l=10, t=10),
+            
+            scene_camera = camera
+            
+            )
     
-    plot(fig)
-    # fig.show()
+    if _plot:
+        plot(fig)
+        # fig.show()
     
-    return
+    return fig
 
 def remplacenull(liste_sig,list_null,strike_fin):
     
@@ -81,10 +110,7 @@ def step_std_from_strike(std,liste_strike,strike,h):
     return liste_sig,list_null
     
 
-def aff_surface(sigma_calcul,strike,maturity):
-    
-    
-    
+def aff_surface(sigma_calcul,strike,maturity,_plot=True):
     
     maturity_surf= np.sort(np.unique(maturity))
     strike_u = np.sort(np.unique(strike))
@@ -102,10 +128,9 @@ def aff_surface(sigma_calcul,strike,maturity):
         sig_surf[:,m]=sigm
         
     sig_surf=remplacenull(sig_surf,list_null,strike_surf)
-    affichage3D(sig_surf,maturity_surf,strike_surf)
-
+    fig = affichage3D(sig_surf,maturity_surf,strike_surf,_plot=_plot)
     
-    return
+    return fig 
 
 #test 
 #std=np.array([0,1,2,5,2,6,8,9])

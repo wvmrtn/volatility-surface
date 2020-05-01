@@ -15,11 +15,16 @@ _BASE_URL = 'https://query1.finance.yahoo.com'
 
 # url links to bonds of each zone
 _BOND_US = 'https://www.treasury.gov/resource-center/data-chart-center/interest-rates/pages/textview.aspx?data=yield'
-
-_TICKERS = {'^XSP': 'United States',
-            '^GSPC': 'United States'}
+_TICKERS = {'^GSPC': 'United States',
+            '^XSP': 'United States'
+            }
 _MAPPING = {'United States': _BOND_US}
 
+# constants for html objects
+_DROPDOWN = [{'label': k, 'value': k} for k in _TICKERS.keys()]
+
 # other constants
-_YEAR = 365 # number of days in a year 
+_YEAR = 252 # number of business days in a year 
+_DEBUG = True
+
 
