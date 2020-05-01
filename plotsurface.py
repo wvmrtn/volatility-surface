@@ -36,7 +36,7 @@ def affichage3D(sigma,maturity,strike, _plot = True):
             height=550,
             
             scene = dict(
-                xaxis_title='Maturity (month)',
+                xaxis_title='Maturity',
                 yaxis_title='Strike ($)',
                 zaxis_title='Volatility',
                 xaxis = dict(showbackground = True,
@@ -128,8 +128,19 @@ def aff_surface(sigma_calcul,strike,maturity,_plot=True):
         sig_surf[:,m]=sigm
         
     sig_surf=remplacenull(sig_surf,list_null,strike_surf)
-    maturity_surf=maturity_surf*12
-    fig = affichage3D(sig_surf,maturity_surf,strike_surf,_plot=_plot)
+    maturity_surf2= np.empty(len(maturity_surf),dtype=object)
+    
+    for i in range(len(maturity_surf)):
+        if maturity_surf[i]<1:
+            maturity_surf2[i] = str(int((maturity_surf[i]*12)%12+1))+' month'
+        elif int(maturity_surf[i]) ==maturity_surf[i]:
+            maturity_surf2[i] = str(int(maturity_surf[i]))+' year '
+        else:
+            maturity_surf2[i] = str(int(maturity_surf[i]))+' year and '  +str(int((maturity_surf[i]*12)%12+1))+' month'
+        
+    
+    
+    fig = affichage3D(sig_surf,maturity_surf2,strike_surf,_plot=_plot)
     
     return fig 
 
