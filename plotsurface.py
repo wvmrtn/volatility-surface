@@ -131,13 +131,19 @@ def aff_surface(sigma_calcul,strike,maturity,_plot=True):
     maturity_surf2= np.empty(len(maturity_surf),dtype=object)
     
     for i in range(len(maturity_surf)):
-        if maturity_surf[i]<1:
-            maturity_surf2[i] = str(int((maturity_surf[i]*12)%12+1))+' month'
-        elif int(maturity_surf[i]) ==maturity_surf[i]:
-            maturity_surf2[i] = str(int(maturity_surf[i]))+' year '
-        else:
-            maturity_surf2[i] = str(int(maturity_surf[i]))+' year and '  +str(int((maturity_surf[i]*12)%12+1))+' month'
         
+        if maturity_surf[i]*12 <1:
+            maturity_surf2[i] =str(int((maturity_surf[i]*12-int(maturity_surf[i]*12))*30) ) + 'D'
+        elif maturity_surf[i]<1:
+            maturity_surf2[i] = str(int((maturity_surf[i]*12)%12+1))+'M ' + str(int((maturity_surf[i]*12-int(maturity_surf[i]*12))*30) ) + 'D'
+        elif int(maturity_surf[i]) ==maturity_surf[i]:
+            maturity_surf2[i] = str(int(maturity_surf[i]))+'Y'
+    
+        else:
+            maturity_surf2[i] = str(int(maturity_surf[i]))+'Y '  +str(int((maturity_surf[i]*12)%12+1))+'M ' + str(int((maturity_surf[i]*12-int(maturity_surf[i]*12))*30) ) + 'D'
+        
+    
+    
     
     
     fig = affichage3D(sig_surf,maturity_surf2,strike_surf,_plot=_plot)
