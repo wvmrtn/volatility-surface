@@ -106,7 +106,7 @@ class MainPage:
             if div_yield is not None and clicked > 0:
                 
                 # create index object
-                index = Index(ticker, div_yield)
+                index = Index(ticker, div_yield/100)
                 index.downloadAllOptions()
                 index.downloadBonds()
                 options = index.options
