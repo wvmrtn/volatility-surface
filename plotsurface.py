@@ -18,7 +18,12 @@ def affichage3D(sigma,maturity,strike, _plot = True):
                                      y=strike,
                                      z=sigma,
                                      colorscale='Viridis',
-                                     colorbar = {'lenmode': 'fraction', 'len': 0.70} 
+                                     colorbar = {'lenmode': 'fraction', 'len': 0.70},
+                                     
+                                     hovertemplate = 'Maturity: %{x}'+
+                                     '<br>Strike: %{y:.0f}<br>'+
+                                     'Volatility: %{z:.0f}<extra></extra>',
+                                     
                                      )])
     
     camera = dict(

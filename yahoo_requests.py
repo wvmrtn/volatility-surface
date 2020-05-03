@@ -267,10 +267,10 @@ class Index:
 if __name__ == '__main__':
     
     div_yield = 0.0231
-    ticker = list(_TICKERS.keys())[0]
-    sp500 = Index(ticker, div_yield)
+    ticker = list(_TICKERS.keys())[-1]
+    index = Index(ticker, div_yield)
     #options = sp500.downloadOptions(1591920000, parse_to_df = False)
-    options = sp500.downloadAllOptions()
+    options = index.downloadAllOptions()
     
     
     
