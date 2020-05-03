@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May  3 12:31:26 2020
+
+@author: franckatteaka
+"""
+
+
 def black_scholes(S,sigma,k,tau,r,delta,types):
     from scipy.stats import norm
     import numpy as np
@@ -50,8 +59,17 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
     vol= sigma_0
     
     bs= black_scholes(S,vol,k,tau,r,delta,types)
-    up_bound=-2* norm.ppf((1-H)/(1+np.exp(k)))
-    down_bound= -2* norm.ppf((1-H)/2)
+    
+    if types=="call":
+        up_bound=-2* norm.ppf((1-H)/(1+np.exp(k)))
+        down_bound= -2* norm.ppf((1-H)/2)
+        
+    if types== "put":
+        
+        c= H+np.exp(-delta*tau)-np.exp(-r*tau) #put call parity
+        up_bound=-2* norm.ppf((1-c)/(1+np.exp(k)))
+        down_bound= -2* norm.ppf((1-c)/2)
+    
     
     while abs(bs-H)>error:
         vol = vol - (bs-H)/vega(S,vol,k,tau,r,delta)
