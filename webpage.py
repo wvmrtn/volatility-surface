@@ -59,11 +59,11 @@ class MainPage:
                                      dcc.Tab(label = 'About', value = 'tab-1', 
                                              className = 'Tab',
                                              selected_className = 'TabSelected',
-                                             selected_style = {'backgroundColor': '#ebeef5'}),
+                                             selected_style = {'backgroundColor': '#f5f5f5'}),
                                      dcc.Tab(label = 'Plot', value = 'tab-2',
                                              className = 'Tab',
                                              selected_className = 'TabSelected',
-                                             selected_style = {'backgroundColor': '#ebeef5'}),
+                                             selected_style = {'backgroundColor': '#f5f5f5'}), #ebeef5
                                      ], className = 'Tabs', id = 'tabs')
                             
                         ], className = 'TabsDiv', id = 'tabs-div'),

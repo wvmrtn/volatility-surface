@@ -17,7 +17,7 @@ def affichage3D(sigma,maturity,strike, _plot = True):
     fig = go.Figure(data=[go.Surface(x=maturity,
                                      y=strike,
                                      z=sigma,
-                                     colorscale='Viridis',
+                                     colorscale='Plasma',
                                      colorbar = {'lenmode': 'fraction', 'len': 0.70},
                                      
                                      hovertemplate = 'Maturity: %{x}'+
@@ -34,7 +34,7 @@ def affichage3D(sigma,maturity,strike, _plot = True):
     
     fig.update_layout(
             #title_text='Volatility surface', 
-            
+
             autosize=True,
             
             width=800, 
@@ -45,16 +45,30 @@ def affichage3D(sigma,maturity,strike, _plot = True):
                 yaxis_title='Strike ($)',
                 zaxis_title='Volatility',
                 xaxis = dict(showbackground = True,
-                             backgroundcolor = '#f5f9ff'),
+                             backgroundcolor = '#302e2b',
+                             tickfont = dict(color = '#f5f5f5'),
+                             gridcolor = '#292724',
+                             zerolinecolor = '#292724'),
                 yaxis = dict(showbackground = True,
-                             backgroundcolor = '#f5f9ff'),
+                             backgroundcolor = '#302e2b',
+                             tickfont = dict(color = '#f5f5f5'),
+                             gridcolor = '#292724',
+                             zerolinecolor = '#292724'),
                 zaxis = dict(showbackground = True,
-                             backgroundcolor = '#f5f9ff'),
+                             backgroundcolor = '#302e2b',
+                             tickfont = dict(color = '#f5f5f5'),
+                             gridcolor = '#292724',
+                             zerolinecolor = '#292724'),
                 ),
+            
+            font = dict(color = '#f5f5f5'),
 
             margin=dict(r=0, b=0, l=0, t=0),
             
-            scene_camera = camera
+            scene_camera = camera,
+            
+            plot_bgcolor = '#292724',
+            paper_bgcolor = '#292724',
             
             )
     
