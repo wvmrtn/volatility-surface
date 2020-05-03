@@ -37,8 +37,8 @@ def affichage3D(sigma,maturity,strike, _plot = True):
             
             autosize=True,
             
-            width=700, 
-            height=550,
+            width=800, 
+            height=650,
             
             scene = dict(
                 xaxis_title='Maturity',
@@ -52,11 +52,13 @@ def affichage3D(sigma,maturity,strike, _plot = True):
                              backgroundcolor = '#f5f9ff'),
                 ),
 
-            margin=dict(r=10, b=10, l=10, t=10),
+            margin=dict(r=0, b=0, l=0, t=0),
             
             scene_camera = camera
             
             )
+    
+    fig.update_traces(showscale = False)
     
     if _plot:
         plot(fig)
