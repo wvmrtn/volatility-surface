@@ -17,7 +17,8 @@ def affichage3D(sigma,maturity,strike, _plot = True):
     fig = go.Figure(data=[go.Surface(x=maturity,
                                      y=strike,
                                      z=sigma,
-                                     colorscale='Plasma',
+                                     colorscale='RdBu',
+                                
                                      colorbar = {'lenmode': 'fraction', 'len': 0.70},
                                      
                                      hovertemplate = 'Maturity: %{x}'+
@@ -37,8 +38,8 @@ def affichage3D(sigma,maturity,strike, _plot = True):
 
             autosize=True,
             
-            width=800, 
-            height=650,
+            width=1000, 
+            height=1000,
             
             scene = dict(
                 xaxis_title='Maturity',
