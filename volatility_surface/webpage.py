@@ -41,7 +41,7 @@ class MainPage:
                     
                     [
                     
-                    html.H2('surface-volatility', className = 'BannerH2')
+                    html.H2('volatility-surface', className = 'BannerH2')
                     
                     ], className = 'MainBannerDiv', id = 'main-banner-div'),
                 
@@ -148,7 +148,7 @@ class AboutPage:
             
             [
                 
-            html.H4(children = 'surface-volatility', className = 'H4About'),
+            html.H4(children = 'volatility-surface', className = 'H4About'),
             html.P('First paragraph first line about this app '
                    'First paragraph seconds line about this app '
                    'First paragraph last line about this app', className = 'PTag'),
