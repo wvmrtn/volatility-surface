@@ -12,10 +12,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 # import local libraries
-from yahoo_requests import Index
-from implied_vol_functions import implied_vol
-from plotsurface import aff_surface
-import config as cfg
+from .yahoo_requests import Index
+from .implied_vol_functions import implied_vol
+from .plotsurface import aff_surface
+import volatility_surface.config as cfg
 
 class MainPage:
     

@@ -14,8 +14,8 @@ import urllib.parse
 # import third-party libraries
 import pandas as pd
 # import local libraries
-from config import _TICKERS, _BASE_URL, _YEAR
-from bond_requests import _downloadBonds
+from .config import _TICKERS, _BASE_URL, _YEAR
+from .bond_requests import _downloadBonds
 
 class Index:
     """ Index object to get options.

@@ -11,7 +11,7 @@ import requests
 # import third-party libraries
 import pandas as pd
 # import local libraries
-from config import _MAPPING, _TICKERS
+from .config import _MAPPING, _TICKERS
 
 def _downloadBonds(ticker):
     """Download bonds depending on ticker symbol.

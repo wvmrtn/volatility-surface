@@ -9,9 +9,7 @@ Created on Fri Apr 24 12:06:37 2020
 # import standard libraries
 # import third-party libraries
 # import local libraries
-from yahoo_requests import Index
-from implied_vol_functions import implied_vol
-from plotsurface import aff_surface
+from volatility_surface import Index, implied_vol, aff_surface
 
 if __name__ == '__main__':
     
@@ -33,7 +31,7 @@ if __name__ == '__main__':
     
     #results=results[results.type=="call"]
     fig = aff_surface(sigma_calcul=results["implied_vol"],strike=results["strike"],maturity=results["maturity"],
-                      _plot = False)
+                      _plot = True)
     # la volatilité est en % si jamais mettre ca dans le label
     # plutot que 365 jour, muliplirt par 252
     # maturity, remettre en jour dans la fonction surface

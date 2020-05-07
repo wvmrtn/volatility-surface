@@ -10,8 +10,8 @@ Created on Thu Apr 30 14:31:55 2020
 # import third-party libraries
 import dash
 # import local libraries
-from config import _DEBUG
-from webpage import MainPage
+from volatility_surface import _DEBUG
+from volatility_surface import MainPage
 
 if __name__ == '__main__':
     

@@ -8,3 +8,4 @@ eggs/
 .spyproject
 .DS_Store
 __pycache__/
+temp-plot.html
