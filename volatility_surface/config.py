@@ -15,11 +15,12 @@ _BASE_URL = 'https://query1.finance.yahoo.com'
 
 # url links to bonds of each zone
 _BOND_US = 'https://www.treasury.gov/resource-center/data-chart-center/interest-rates/pages/textview.aspx?data=yield'
+_BOND_EU = 'https://ycharts.com/indicators/reports/euro_yield_curves'
 _TICKERS = {'^GSPC': 'United States',
-            '^XSP': 'United States',
-            'FEZ': 'United States',
+            'FEZ': 'Europe',
             }
-_MAPPING = {'United States': _BOND_US}
+_MAPPING = {'United States': _BOND_US,
+            'Europe': _BOND_EU}
 
 # constants for html objects
 _DROPDOWN = [{'label': k, 'value': k} for k in _TICKERS.keys()]
