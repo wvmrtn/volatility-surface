@@ -19,8 +19,10 @@ def open_browser():
       webbrowser.open_new('http://127.0.0.1:{}'.format(PORT))
 
 if __name__ == '__main__':
-    
-    app = dash.Dash(__name__)
+
+    app = dash.Dash(__name__,
+                    external_stylesheets = ['https://codepen.io/wvmrtn/pen/GRpvLOM.css'])
+    # serve css from codepen
     app.config['suppress_callback_exceptions'] = True
     app.title = 'surface-volatility'    
         
