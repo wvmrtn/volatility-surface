@@ -26,6 +26,9 @@ _DROPDOWN = [{'label': k, 'value': k} for k in _TICKERS.keys()]
 
 # other constants
 _YEAR = 252 # number of business days in a year 
-_DEBUG = True
+_DEBUG = False
+
+# PORT 
+PORT = 8050
 
 

@@ -7,11 +7,16 @@ Created on Thu Apr 30 14:31:55 2020
 """
 
 # import standard libraries
+from threading import Timer
+import webbrowser
 # import third-party libraries
 import dash
 # import local libraries
-from volatility_surface import _DEBUG
+from volatility_surface import _DEBUG, PORT
 from volatility_surface import MainPage
+
+def open_browser():
+      webbrowser.open_new('http://127.0.0.1:{}'.format(PORT))
 
 if __name__ == '__main__':
     
@@ -22,4 +27,9 @@ if __name__ == '__main__':
     main_page = MainPage(app)
     app.layout = main_page.layout
     
-    app.run_server(debug = _DEBUG)
+    try:
+        Timer(1, open_browser).start()
+        app.run_server(debug = _DEBUG, port = PORT)
+    except:
+        Timer(1, open_browser).start()
+        app.run_server(debug = not _DEBUG, port = PORT)
