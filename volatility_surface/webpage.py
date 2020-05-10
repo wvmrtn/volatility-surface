@@ -12,9 +12,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 # import local libraries
-from .yahoo_requests import Index
-from .implied_vol_functions import implied_vol
-from .plotsurface import aff_surface
+from volatility_surface.yahoo_requests import Index
+from volatility_surface.implied_vol_functions import implied_vol
+from volatility_surface.plotsurface import aff_surface
 import volatility_surface.config as cfg
 
 class MainPage:
@@ -149,15 +149,12 @@ class AboutPage:
             [
                 
             html.H4(children = 'volatility-surface', className = 'H4About'),
-            html.P('First paragraph first line about this app '
-                   'First paragraph seconds line about this app '
-                   'First paragraph last line about this app', className = 'PTag'),
-            html.P('Second paragraph first line about this app '
-                   'Second paragraph seconds line about this app '
-                   'Second paragraph last line about this app', className = 'PTag'),
-            html.P('Third paragraph first line about this app '
-                   'Third paragraph seconds line about this app '
-                   'Third paragraph last line about this app', className = 'PTag')
+            html.P('Use this calculator to calculate and visualized the implied volatility surface of the S&P500 index and the Euro Stoxx 50 index.', 
+                   className = 'PTag'),
+            html.P('By using the market price of the option as a known variable in the BSM formula, underlying volatility can be back-calculated and the volatility calculated this way is known as implied volatility.',
+                   className = 'PTag'),
+            html.P('Implied volatility represents the market expectation of the volatility and it is often used to check if an option is under or overpriced.', 
+                   className = 'PTag')
                 
             ], className = 'AboutDiv', id = 'about-div')
             

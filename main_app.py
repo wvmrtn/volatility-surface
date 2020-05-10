@@ -27,6 +27,7 @@ if __name__ == '__main__':
     main_page = MainPage(app)
     app.layout = main_page.layout
     
+    # handle different versions of dash across different operating systems
     try:
         Timer(1, open_browser).start()
         app.run_server(debug = _DEBUG, port = PORT)

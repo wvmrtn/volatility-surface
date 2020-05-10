@@ -38,8 +38,8 @@ def affichage3D(sigma,maturity,strike, _plot = True):
 
             autosize=True,
             
-            width=1000, 
-            height=1000,
+            width=700, 
+            height=700,
             
             scene = dict(
                 xaxis_title='Maturity',

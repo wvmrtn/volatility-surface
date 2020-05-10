@@ -7,11 +7,12 @@ Created on Thu Apr 23 19:49:05 2020
 """
 
 # import standard libraries
+import os
 import requests
 # import third-party libraries
 import pandas as pd
 # import local libraries
-from .config import _MAPPING, _TICKERS
+from volatility_surface.config import _MAPPING, _TICKERS
 
 def _downloadBonds(ticker):
     """Download bonds depending on ticker symbol.
