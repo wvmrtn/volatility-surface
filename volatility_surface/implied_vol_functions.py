@@ -65,16 +65,22 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
     if types== "put":
         
         c= H+np.exp(-delta*tau)-np.exp(-r*tau) #put call parity
-        up_bound=-2* norm.ppf((1-c)/(1+np.exp(k)))
+        up_bound= -2* norm.ppf((1-c)/(1+np.exp(k)))
         down_bound= -2* norm.ppf((1-c)/2)
+
     
-    
+    i=0 #max iteration
     while abs(bs-H)>error:
+        
         vol = vol - (bs-H)/vega(S,vol,k,tau,r,delta)
-        if (vol==np.inf) or (vol==-np.inf):
+        if (vol==np.inf) or (vol==-np.inf) or (i>60000):
             vol=np.nan
-        break
+            break
+        
+        
         bs= black_scholes(S,vol,k,tau,r,delta,types)
+        i=i+1
+        
         
     if vol<0:
         vol=np.nan
@@ -128,7 +134,7 @@ def implied_vol(df,sigma_0,error,div_yield,S):
     
     
     result=compact(df2[["strike","maturity","implied_vol"]])
-    result['implied_vol']= result['implied_vol'] *100
+    result['implied_vol']= result['implied_vol'] * 100
    
     return result
 
