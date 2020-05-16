@@ -9,13 +9,19 @@ Created on Thu Apr 23 14:54:28 2020
 # import standard libraries
 import datetime
 import numpy as np
+import os
 import requests as re
+import sys
 import urllib.parse
 # import third-party libraries
 import pandas as pd
 # import local libraries
-from .config import _TICKERS, _BASE_URL, _YEAR
-from .bond_requests import _downloadBonds
+from volatility_surface.config import _TICKERS, _BASE_URL, _YEAR
+from volatility_surface.bond_requests import _downloadBonds
+
+# some constants
+_OPTIONS_PATH = os.path.dirname(__file__)
+_OPTIONS_FOLDER = 'options'
 
 class Index:
     """ Index object to get options.
@@ -78,7 +84,8 @@ class Index:
         """
         return datetime.datetime.fromtimestamp(epoch).strftime('%Y-%m-%d') 
 
-    def _customGet(self, get = 'options', date = None):
+    def _customGet(self, get = 'options', date = None,
+                   max_retries = 10):
         """Custom get requests.
 
         Parameters
@@ -87,6 +94,9 @@ class Index:
             What to get.  The default is 'options'
         date : string or int, optional
             The maturity date of the option. The default is None.
+        max_retries : int
+            Maximum number of requests before failing completely.
+            The default is 10.
 
         Raises
         ------
@@ -99,7 +109,9 @@ class Index:
             JSON-type reponse from request.
 
         """
+        find_key = None
         if get == 'options':
+            find_key = 'optionChain'
             if not date:
                 url = '{}/v7/finance/options/{}'.format(_BASE_URL, self.ticker_encoded)
             else:
@@ -107,15 +119,20 @@ class Index:
                                                                 self.ticker_encoded,
                                                                 date)
         elif get == 'price': # get price otherwise
+            find_key =  'chart'
             url = '{}/v8/finance/chart/{}'.format(_BASE_URL, 
                                                   self.ticker_encoded)
+        # this case should never happen
         else:
+            find_key = ''
             url = ''
             
         # try requests
         try:
-            response = re.get(url).json()
-            return response
+            for t in range(max_retries):
+                response = re.get(url).json()
+                if find_key in response:
+                    return response
         # raise error, cannot continue
         except re.exceptions.RequestException as e:
             raise e
@@ -203,11 +220,25 @@ class Index:
         """
         options_df = pd.DataFrame()
         for _, epoch in self.maturity_dates.items():
-            temp = self.downloadOptions(date = epoch, parse_to_df = True)
-            options_df = pd.concat([options_df, temp], axis = 0)
+            try:
+                temp = self.downloadOptions(date = epoch, parse_to_df = True)
+                options_df = pd.concat([options_df, temp], axis = 0)
+            except:
+                print('Error while getting options at date {} : {}'\
+                      .format(self._epochToDate(epoch), sys.exc_info()[0]))  
+                
         # reset index
         options_df = options_df.reset_index(drop = True)
         self.options = options_df
+        
+        # write in case
+        self.options.to_csv(os.path.join(_OPTIONS_PATH, _OPTIONS_FOLDER, 
+                                         self.ticker + '.csv'))
+        
+        if self.options.empty:
+            # load previous options in not able to download any data
+            self.options = pd.read_csv(os.path.join(_OPTIONS_PATH, _OPTIONS_FOLDER, self.ticker + '.csv'),
+                                       index_col = 0)
         
         # do a merge with bonds if not empty
         if not self.bonds.empty:
@@ -271,6 +302,8 @@ if __name__ == '__main__':
     index = Index(ticker, div_yield)
     #options = sp500.downloadOptions(1591920000, parse_to_df = False)
     options = index.downloadAllOptions()
+    index.downloadBonds()
+    options = index.options
     
     
     

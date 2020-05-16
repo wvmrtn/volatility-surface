@@ -10,6 +10,7 @@ Created on Thu Apr 23 19:49:05 2020
 import copy
 import os
 import requests
+import sys
 # import third-party libraries
 import pandas as pd
 # import local libraries
@@ -69,6 +70,8 @@ def _downloadBonds(ticker):
             
         except:
             # download in case
+            print('Error while getting bonds for {}: {}'\
+                  .format(area, sys.exc_info()[0]))
             bonds = pd.read_csv(os.path.join(_BONDS_PATH, _BONDS_FOLDER, area + '.csv'),
                                 index_col = 0, squeeze = True)
             
@@ -105,6 +108,8 @@ def _downloadBonds(ticker):
             
         except:
             # download in case
+            print('Error while getting bonds for {}: {}'\
+                  .format(area, sys.exc_info()[0]))
             bonds = pd.read_csv(os.path.join(_BONDS_PATH, _BONDS_FOLDER, area + '.csv'),
                                 index_col = 0, squeeze = True)
     

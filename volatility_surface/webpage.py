@@ -48,6 +48,12 @@ class MainPage:
                 # div containing the tabs and graph
                 html.Div(
                     
+                    dcc.Loading(id = 'loading-figure',
+                                className = 'LoadingFigure',
+                                type = 'cube',
+                                color = '#f5f5f5',
+                                children = 
+                    
                     [
                      
                     html.Div(
@@ -76,10 +82,11 @@ class MainPage:
                     
                     html.Div(className = 'TabContent', id = 'tab-content',
                              children = self.plot_page.layout), # dirty fix
-
-                    html.Div([], className = 'FigureDiv', id = 'figure-div'),   
                     
-                    ], className = 'ContentDiv', id = 'content-div'),
+                    html.Div([], className = 'FigureDiv', 
+                             id = 'figure-div'),
+                    
+                    ]), className = 'ContentDiv', id = 'content-div'),
                 
             ], className = 'MainDiv', id = 'main-div')
         

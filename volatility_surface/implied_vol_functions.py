@@ -6,6 +6,7 @@ Created on Sun May  3 12:31:26 2020
 @author: Kassi Franck Atte Aka, Corentin Bourdeix, William Martin
 """
 
+import time
 from scipy.stats import norm
 import numpy as np
 import pandas as pd
@@ -70,10 +71,12 @@ def vol_extraction(H,S,sigma_0,k,tau,r,delta,types,error):
 
     
     i=0 #max iteration
+    timer = 5 # in seconds
+    now = time.time() # limit on timer (seconds) as well
     while abs(bs-H)>error:
         
         vol = vol - (bs-H)/vega(S,vol,k,tau,r,delta)
-        if (vol==np.inf) or (vol==-np.inf) or (i>60000):
+        if (vol==np.inf) or (vol==-np.inf) or (i>60000) or (time.time()-now > timer):
             vol=np.nan
             break
         
