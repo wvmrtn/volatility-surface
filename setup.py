@@ -18,6 +18,7 @@ setup(
           'dash>=1.0.0',
           'pandas>=1.0.0',
           'scipy>=1.0.0',
-          'jupyter-dash'
+          'jupyter-dash',
+          'requests>=2.0.0'
           ],
       )
